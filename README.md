@@ -19,6 +19,13 @@ $ cd ..
 $ make
 ```
 
+## Todo:
+- [x] Setup Limine
+- [x] Bootable OS
+- [x] Basic Memory (memcpy, memset, memmove, memcmp)
+- [x] Basic Output (putct, printt, putst, printft)
+- [ ] Basic Input
+
 ## Features:
 Splat OS Has many revolutionary features, including:
 

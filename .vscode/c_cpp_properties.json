@@ -1,0 +1,43 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${vcpkgRoot}/x64-windows/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "C:/w64devkit/bin/g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x86",
+            "compilerArgs": [
+                "-ffreestanding",
+                "-fno-stack-protector",
+                "-fno-stack-check",
+                "-fno-pic",
+                "-mabi=sysv",
+                "-mno-80387",
+                "-mno-mmx",
+                "-mno-3dnow",
+                "-mno-sse",
+                "-mno-sse2",
+                "-mno-red-zone",
+                "-mcmodel=kernel",
+                "-MMD",
+                "-O2",
+                "-g",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-pipe"
+            ]
+        }
+    ],
+    "version": 4
+}
