@@ -1,6 +1,8 @@
-#include "stdio.h"
-#include <limine.h>
 #include <stddef.h>
+#include <limine.h>
+#include "stdio.h"
+#include "drivers/keyboard.h"
+#include "strings.h"
 
 static volatile struct limine_terminal_request terminal_request = {
     .id = LIMINE_TERMINAL_REQUEST,
@@ -11,7 +13,7 @@ static const char CONVERSION_TABLE[] = "0123456789abcdef";
 
 void putc(char c) {
     if (terminal_request.response == NULL || terminal_request.response->terminal_count < 1) return;
-    char buffer[2] = {c, '\0'};
+    char buffer[1] = {c};
     terminal_request.response->write(terminal_request.response->terminals[0], buffer, 1);
 }
 
@@ -99,4 +101,23 @@ uint8_t inb(uint16_t port)
     uint8_t data;
     __asm__ volatile("inb %1, %0" : "=a"(data) : "Nd"(port));
     return data;
+}
+
+void input(char str[], int nchars)
+{
+    int i = 0;
+    int ch;
+    while((ch = getchar()) != '\n' && ch != 128 )
+    {
+      if (i < nchars)
+      {
+        if (ch == '\b') str[i--] = ' ';
+        else str[i++] = ch;
+      }
+      else
+      {
+        break;
+      }
+    }
+    str[i] = '\0';
 }

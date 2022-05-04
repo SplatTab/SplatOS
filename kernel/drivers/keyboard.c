@@ -192,6 +192,7 @@ char getchar()
     while (!pressed);
     pressed = false;
     print(c);
+    if (c[0] == '\b') print(" \b");
     return c[0];
 }
 

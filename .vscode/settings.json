@@ -3,6 +3,8 @@
         "memory.h": "c",
         "stddef.h": "c",
         "stdio.h": "c",
-        "idt.h": "c"
+        "idt.h": "c",
+        "limine.h": "c",
+        "strings.h": "c"
     }
 }
