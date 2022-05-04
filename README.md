@@ -30,7 +30,7 @@ $ make
 ## Features:
 Splat OS Has many revolutionary features, including:
 
-+ No Input! What is it good for anyway all you need is Hello World!
++ ~~No Input! What is it good for anyway all you need is Hello World!~~
 
 + No Audio! What is it good for anyway all you need is Hello World!
 
@@ -42,4 +42,4 @@ Splat OS Has many revolutionary features, including:
 
 + No Applications! What is it good for anyway all you need is Hello World!
 
-+ Hello World Writing Kernel Beep Boop Low Level Programming Standard Libary for loosers lmfao!
++ Best Hello World Kernel Low Level Programming Is Fun!

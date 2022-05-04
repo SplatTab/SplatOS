@@ -100,27 +100,3 @@ uint8_t inb(uint16_t port)
     __asm__ volatile("inb %1, %0" : "=a"(data) : "Nd"(port));
     return data;
 }
-
-uint16_t ins(uint16_t port)
-{
-    uint16_t rv;
-    __asm__ volatile ("inw %1, %0" : "=a" (rv) : "dN" (port));
-    return rv;
-}
-
-void outs(uint16_t port, uint16_t data)
-{
-    __asm__ volatile ("outw %1, %0" : : "dN" (port), "a" (data));
-}
-
-uint32_t inl(uint16_t port)
-{
-    uint32_t rv;
-    __asm__ volatile ("inl %%dx, %%eax" : "=a" (rv) : "dN" (port));
-    return rv;
-}
-
-void out(uint16_t port, uint32_t data)
-{
-    __asm__ volatile ("outl %%eax, %%dx" : : "dN" (port), "a" (data));
-}
