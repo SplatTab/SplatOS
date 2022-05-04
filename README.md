@@ -26,6 +26,8 @@ $ make
 - [x] Basic Output (putc, print, puts, printf)
 - [x] Interrupts (Exceptions, Device Interaction)
 - [x] Basic Input (Keyboard)
+- [x] Debug/Commands
+- [x] Tic Tac Toe (;
 
 ## Features:
 Splat OS Has many revolutionary features, including:

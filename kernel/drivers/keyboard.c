@@ -274,10 +274,8 @@ void kbd_handler(struct registers_t *regs)
                 update_leds();
                 break;
             case UP:
-                print("\033[A");
                 break;
             case DOWN:
-                print("\033[B");
                 break;
             case RIGHT:
                 print("\033[C");
@@ -287,11 +285,6 @@ void kbd_handler(struct registers_t *regs)
                 break;
             default:
                 c[0] = get_ascii_char(scancode);
-                if (kbd_mod.ctrl && (c[0] == 'l' || c[0] == 'L'))
-                {
-                    print("\033[H\033[2J");
-                    break;
-                }
                 pressed = true;
                 // print(c);
                 break;

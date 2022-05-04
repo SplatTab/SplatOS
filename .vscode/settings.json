@@ -5,6 +5,11 @@
         "stdio.h": "c",
         "idt.h": "c",
         "limine.h": "c",
-        "strings.h": "c"
+        "strings.h": "c",
+        "ticto.h": "c",
+        "algorithm": "c",
+        "iterator": "c",
+        "xmemory": "c",
+        "xutility": "c"
     }
 }

@@ -121,3 +121,8 @@ void input(char str[], int nchars)
     }
     str[i] = '\0';
 }
+
+struct limine_terminal_response getconsole()
+{
+    return *terminal_request.response;
+}

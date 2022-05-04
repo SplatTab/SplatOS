@@ -1,5 +1,6 @@
 #include "strings.h"
 #include "memory.h"
+#include "limits.h"
 
 size_t strnlen(const char *s, size_t maxlen)
 {
@@ -17,15 +18,33 @@ char *stradd(char *s1, const char *s2, size_t n)
     return memcpy(s1, s2, size);
 }
 
-void ltos(char* str, uint32_t val, size_t digits)
+int atoi(const char *str)
 {
-  size_t i=1u;
+    int sign = 1, base = 0, i = 0;
 
-  for(; i<=digits; i++)
-  {
-    str[digits-i] = (char)((val % 10u) + '0');
-    val/=10u;
-  }
+    while (str[i] == ' ')
+    {
+        i++;
+    }
 
-  str[i-1u] = '\0';
+    if (str[i] == '-' || str[i] == '+')
+    {
+        sign = 1 - 2 * (str[i++] == '-');
+    }
+
+    while (str[i] >= '0' && str[i] <= '9')
+    {
+        if (base > INT_MAX / 10
+            || (base == INT_MAX / 10
+            && str[i] - '0' > 7))
+        {
+            if (sign == 1)
+                return INT_MAX;
+            else
+                return INT_MIN;
+        }
+        base = 10 * base + (str[i++] - '0');
+    }
+
+    return base * sign;
 }

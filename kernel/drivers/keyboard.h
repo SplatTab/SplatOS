@@ -27,5 +27,7 @@ struct kbd_mod_t
     bool scrolllock : 1;
 };
 
+extern struct kbd_mod_t kbd_mod;
+
 void ps2_init();
 char getchar();
