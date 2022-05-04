@@ -1,5 +1,5 @@
-#include <strings.h>
-#include <memory.h>
+#include "strings.h"
+#include "memory.h"
 
 size_t strnlen(const char *s, size_t maxlen)
 {

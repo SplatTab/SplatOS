@@ -1,5 +1,5 @@
+#include "stdio.h"
 #include <limine.h>
-#include <stdio.h>
 #include <stddef.h>
 
 static volatile struct limine_terminal_request terminal_request = {
@@ -9,28 +9,28 @@ static volatile struct limine_terminal_request terminal_request = {
 
 static const char CONVERSION_TABLE[] = "0123456789abcdef";
 
-void putct(char c) {
+void putc(char c) {
     if (terminal_request.response == NULL || terminal_request.response->terminal_count < 1) return;
     char buffer[2] = {c, '\0'};
     terminal_request.response->write(terminal_request.response->terminals[0], buffer, 1);
 }
 
-void printt(const char *msg) {
-    for (size_t i = 0; msg[i]; i++) putct(msg[i]);
+void print(const char *msg) {
+    for (size_t i = 0; msg[i]; i++) putc(msg[i]);
 }
 
-void putst(const char *msg) {
-    printt(msg);
-    putct('\n');
+void puts(const char *msg) {
+    print(msg);
+    putc('\n');
 }
 
-static void printhext(size_t num) {
+static void printhex(size_t num) {
     int i;
     char buf[17];
 
     if (!num)
     {
-        printt("0x0");
+        print("0x0");
         return;
     }
 
@@ -43,16 +43,16 @@ static void printhext(size_t num) {
     }
 
     i++;
-    printt("0x");
-    printt(&buf[i]);
+    print("0x");
+    print(&buf[i]);
 }
 
-static void printdect(size_t num) {
+static void printdec(size_t num) {
     int i;
     char buf[21] = {0};
 
     if (!num) {
-        putct('0');
+        putc('0');
         return;
     }
 
@@ -62,10 +62,10 @@ static void printdect(size_t num) {
     }
 
     i++;
-    printt(buf + i);
+    print(buf + i);
 }
 
-void printft(const char *format, ...) {
+void printf(const char *format, ...) {
     va_list argp;
     va_start(argp, format);
 
@@ -73,18 +73,54 @@ void printft(const char *format, ...) {
         if (*format == '%') {
             format++;
             if (*format == 'x') {
-                printhext(va_arg(argp, size_t));
+                printhex(va_arg(argp, size_t));
             } else if (*format == 'd') {
-                printdect(va_arg(argp, size_t));
+                printdec(va_arg(argp, size_t));
             } else if (*format == 's') {
-                printt(va_arg(argp, char*));
+                print(va_arg(argp, char*));
             }
         } else {
-            putct(*format);
+            putc(*format);
         }
         format++;
     }
 
-    putct('\n');
+    putc('\n');
     va_end(argp);
+}
+
+void outb(uint16_t port, uint8_t val)
+{
+    __asm__ volatile("outb %1, %0" :: "dN"(port), "a"(val));
+}
+
+uint8_t inb(uint16_t port)
+{
+    uint8_t data;
+    __asm__ volatile("inb %1, %0" : "=a"(data) : "Nd"(port));
+    return data;
+}
+
+uint16_t ins(uint16_t port)
+{
+    uint16_t rv;
+    __asm__ volatile ("inw %1, %0" : "=a" (rv) : "dN" (port));
+    return rv;
+}
+
+void outs(uint16_t port, uint16_t data)
+{
+    __asm__ volatile ("outw %1, %0" : : "dN" (port), "a" (data));
+}
+
+uint32_t inl(uint16_t port)
+{
+    uint32_t rv;
+    __asm__ volatile ("inl %%dx, %%eax" : "=a" (rv) : "dN" (port));
+    return rv;
+}
+
+void out(uint16_t port, uint32_t data)
+{
+    __asm__ volatile ("outl %%eax, %%dx" : : "dN" (port), "a" (data));
 }

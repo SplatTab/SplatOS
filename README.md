@@ -8,14 +8,14 @@ My First OS!
 $ git clone --recursive https://github.com/SplatTab/SplatOS.git
 $ cd SplatOS
 
-$ wsl # If on windows load into Windows Subsystem for Linux
-
 # Building:
-## Building Limine (One time only):
+
+## If you are on linux you need to build limine first:
 $ cd limine
 $ make
-## Builing SplatOS:
 $ cd ..
+
+## Now to build SplatOS just run make in the root directory:
 $ make
 ```
 
@@ -23,8 +23,9 @@ $ make
 - [x] Setup Limine
 - [x] Bootable OS
 - [x] Basic Memory (memcpy, memset, memmove, memcmp)
-- [x] Basic Output (putct, printt, putst, printft)
-- [ ] Basic Input
+- [x] Basic Output (putc, print, puts, printf)
+- [x] Interrupts (Exceptions, Device Interaction)
+- [x] Basic Input (Keyboard)
 
 ## Features:
 Splat OS Has many revolutionary features, including:

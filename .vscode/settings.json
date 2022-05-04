@@ -1,9 +1,8 @@
 {
     "files.associations": {
-        "stdbool.h": "c",
-        "cstdarg": "c",
-        "cstdio": "c",
-        "cwchar": "c",
-        "cstdint": "c"
+        "memory.h": "c",
+        "stddef.h": "c",
+        "stdio.h": "c",
+        "idt.h": "c"
     }
 }
