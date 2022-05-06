@@ -1,122 +1,83 @@
-#include <stdbool.h>
+#include <limits.h>
 #include "math.h"
 #include "strings.h"
+#include "stdio.h"
 
 int abs(int x)
 {
     return x < 0 ? -x : x;
 }
 
-const char *formatTime(long int seconds)
+time formatTime(int64_t unix)
 {
+    time dtime;
 
-    // Save the time in Human
-    // readable format
-    char ans[256];
+    long long days, secs;
+    int remdays, remsecs, remyears;
+    int qc_cycles, c_cycles, q_cycles;
+    int years, months;
+    int wday, yday, leap;
+    static const char days_in_month[] = {31,30,31,30,31,31,30,31,30,31,31,29};
 
-    // Number of days in month
-    // in normal year
-    int daysOfMonth[] = { 31, 28, 31, 30, 31, 30,
-                          31, 31, 30, 31, 30, 31 };
+    /* Reject time_t values whose year would overflow int */
+    if (unix < INT_MIN * 31622400LL || unix > INT_MAX * 31622400LL)
+        return dtime;
 
-    long int currYear, daysTillNow, extraTime,
-        extraDays, index, date, month, hours,
-        minutes, secondss, flag = 0;
-
-    // Calculate total days unix time T
-    daysTillNow = seconds / (24 * 60 * 60);
-    extraTime = seconds % (24 * 60 * 60);
-    currYear = 1970;
-
-    // Calculating current year
-    while (daysTillNow >= 365) {
-        if (currYear % 400 == 0
-            || (currYear % 4 == 0
-                && currYear % 100 != 0)) {
-            daysTillNow -= 366;
-        }
-        else {
-            daysTillNow -= 365;
-        }
-        currYear += 1;
+    secs = unix - LEAPOCH;
+    days = secs / 86400;
+    remsecs = secs % 86400;
+    if (remsecs < 0) {
+        remsecs += 86400;
+        days--;
     }
 
-    // Updating extradays because it
-    // will give days till previous day
-    // and we have include current day
-    extraDays = daysTillNow + 1;
+    wday = (3+days)%7;
+    if (wday < 0) wday += 7;
 
-    if (currYear % 400 == 0
-        || (currYear % 4 == 0
-            && currYear % 100 != 0))
-        flag = 1;
-
-    // Calculating MONTH and DATE
-    month = 0, index = 0;
-    if (flag == 1) {
-        while (true) {
-
-            if (index == 1) {
-                if (extraDays - 29 < 0)
-                    break;
-                month += 1;
-                extraDays -= 29;
-            }
-            else {
-                if (extraDays
-                        - daysOfMonth[index]
-                    < 0) {
-                    break;
-                }
-                month += 1;
-                extraDays -= daysOfMonth[index];
-            }
-            index += 1;
-        }
-    }
-    else {
-        while (true) {
-
-            if (extraDays
-                    - daysOfMonth[index]
-                < 0) {
-                break;
-            }
-            month += 1;
-            extraDays -= daysOfMonth[index];
-            index += 1;
-        }
+    qc_cycles = days / DAYS_PER_400Y;
+    remdays = days % DAYS_PER_400Y;
+    if (remdays < 0) {
+        remdays += DAYS_PER_400Y;
+        qc_cycles--;
     }
 
-    // Current Month
-    if (extraDays > 0) {
-        month += 1;
-        date = extraDays;
+    c_cycles = remdays / DAYS_PER_100Y;
+    if (c_cycles == 4) c_cycles--;
+    remdays -= c_cycles * DAYS_PER_100Y;
+
+    q_cycles = remdays / DAYS_PER_4Y;
+    if (q_cycles == 25) q_cycles--;
+    remdays -= q_cycles * DAYS_PER_4Y;
+
+    remyears = remdays / 365;
+    if (remyears == 4) remyears--;
+    remdays -= remyears * 365;
+
+    leap = !remyears && (q_cycles || !c_cycles);
+    yday = remdays + 31 + 28 + leap;
+    if (yday >= 365+leap) yday -= 365+leap;
+
+    years = remyears + 4*q_cycles + 100*c_cycles + 400*qc_cycles;
+
+    for (months=0; days_in_month[months] <= remdays; months++)
+        remdays -= days_in_month[months];
+
+    if (years+100 > INT_MAX || years+100 < INT_MIN)
+        return dtime;
+
+    dtime.year = years + 2000;
+    dtime.month = months + 3;
+    if (dtime.month >= 12) {
+        dtime.month -=12;
+        dtime.year++;
     }
-    else {
-        if (month == 2 && flag == 1)
-            date = 29;
-        else {
-            date = daysOfMonth[month - 1];
-        }
-    }
+    dtime.mday = remdays + 1;
+    dtime.wday = wday;
+    dtime.yday = yday;
 
-    // Calculating HH:MM:YYYY
-    hours = extraTime / 3600;
-    minutes = (extraTime % 3600) / 60;
-    secondss = (extraTime % 3600) % 60;
+    dtime.hour = remsecs / 3600;
+    dtime.minutes = remsecs / 60 % 60;
+    dtime.seconds = remsecs % 60;
 
-    stradd(ans, itoa(date, ans, 10), 10);
-    stradd(ans, "/", 2);
-    stradd(ans, itoa(month, ans, 10), 10);
-    stradd(ans, "/", 2);
-    stradd(ans, itoa(currYear, ans, 10), 10);
-    stradd(ans, " ", 2);
-    stradd(ans, itoa(hours, ans, 10), 10);
-    stradd(ans, ":" , 2);
-    stradd(ans, itoa(minutes, ans, 10), 10);
-    stradd(ans, ":", 2);
-    stradd(ans, itoa(secondss, ans, 10), 10);
-
-    return ans;
+    return dtime;
 }

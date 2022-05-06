@@ -12,6 +12,7 @@
         "xmemory": "c",
         "xutility": "c",
         "mouse.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "stdint.h": "c"
     }
 }

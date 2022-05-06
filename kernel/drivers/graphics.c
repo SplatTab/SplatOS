@@ -24,6 +24,7 @@ uint32_t getpixel(int x, int y)
     return *(uint32_t*)((uint64_t)fb->address + (x*4) + (y * fb->width * 4));
 }
 
+// This is slow but it's better than writing every pixel manually
 void drawbitmap(uint8_t *bitmap, point position, point imageres, uint32_t color, uint32_t *buffer, uint32_t *bufferswap)
 {
     int xMax = imageres.x, yMax = imageres.y;
@@ -70,12 +71,4 @@ void clearbitmap(uint8_t *bitmap, point position, point imageres, uint32_t *buff
             }
         }
     }
-}
-
-point getresolution()
-{
-    point resolution;
-    resolution.x = fb->width;
-    resolution.y = fb->height;
-    return resolution;
 }

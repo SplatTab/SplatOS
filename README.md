@@ -37,7 +37,7 @@ Splat OS Has many revolutionary features, including:
 
 + No Audio! What is it good for anyway all you need is Hello World!
 
-+ No Graphics! What is it good for anyway all you need is Hello World!
++ ~~No Graphics! What is it good for anyway all you need is Hello World!~~
 
 + No Network! What is it good for anyway all you need is Hello World!
 

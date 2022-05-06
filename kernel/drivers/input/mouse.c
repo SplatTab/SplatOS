@@ -102,15 +102,8 @@ void ps2md_process()
     if (packet[0] & YOVERFLOW) ps2md_mod.yOverflow = true;
     else ps2md_mod.yOverflow = false;
 
-    if (packet[0] & LEFTCLICK)
-    {
-        clearbitmap(cursorgraphic, ps2md_mod.lastposition, imageres, mousebuffer, mousebufferswap);
-        ps2md_mod.LeftClick = true;
-    }
-    else
-    {
-        ps2md_mod.LeftClick = false;
-    }
+    if (packet[0] & LEFTCLICK) ps2md_mod.LeftClick = true;
+    else ps2md_mod.LeftClick = false;
 
     if (packet[0] & MIDDLECLICK) ps2md_mod.MiddleClick = true;
     else ps2md_mod.MiddleClick = false;
@@ -142,7 +135,7 @@ void ps2md_process()
         if (ps2md_mod.yOverflow) ps2md_mod.position.y += 255;
     }
 
-    point resolution = getresolution();
+    point resolution = { fb->width, fb->height };
 
     if (ps2md_mod.position.x < 0) ps2md_mod.position.x = 0;
     if (ps2md_mod.position.x > resolution.x) ps2md_mod.position.x = resolution.x;
@@ -150,6 +143,7 @@ void ps2md_process()
     if (ps2md_mod.position.y < 0) ps2md_mod.position.y = 0;
     if (ps2md_mod.position.y > resolution.y) ps2md_mod.position.y = resolution.y;
 
+    // Might manually write every address offset to the buffer considering this is running every mouse movement
     if (mouseLoaded) clearbitmap(cursorgraphic, ps2md_mod.lastposition, imageres, mousebuffer, mousebufferswap);
     drawbitmap(cursorgraphic, ps2md_mod.position, imageres, 0x3498ebFF, mousebuffer, mousebufferswap);
     ps2md_mod.lastposition = ps2md_mod.position;

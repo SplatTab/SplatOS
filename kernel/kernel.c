@@ -15,16 +15,43 @@ static volatile struct limine_boot_time_request boot_time = {
     .revision = 0
 };
 
+static volatile struct limine_bootloader_info_request boot_info = {
+    .id = LIMINE_BOOTLOADER_INFO_REQUEST,
+    .revision = 0
+};
+
+static volatile struct limine_smp_request cpu_info = {
+    .id = LIMINE_SMP_REQUEST,
+    .revision = 0
+};
+
 void printbootinfo()
 {
-    point resolution = getresolution();
+    int64_t bootTime = boot_time.response->boot_time;
+    time seperatedTime = formatTime(bootTime);
 
     puts("\nCopyright (C) 2022 (SplatTab)");
-    puts("Welcome to SplatOS v0.07 Kernel\n\n");
+    puts("Welcome to SplatOS v0.08 Kernel\n\n");
 
-    printf("Boot time In Unix: %d", boot_time.response->boot_time);
+    puts("Boot Info:\n------------------------------");
+    printf("Bootloader: %s v%s", boot_info.response->name, boot_info.response->version);
+    printf("Boot time In Unix: %d", bootTime);
+    printf("Boot time In Formatted(GMT): %d/%d/%d %d:%d", seperatedTime.month, seperatedTime.mday, seperatedTime.year, seperatedTime.hour, seperatedTime.minutes);
+    putc('\n');
+
+    puts("Device Info:\n------------------------------");
+    printf("CPU Count: %d", cpu_info.response->cpu_count);
+    putc('\n');
+
+    puts("ACPI Info:\n------------------------------");
     printf("RSDP Signature: %s", rsdp_sig);
-    printf("Screen Resolution: %dx%d", resolution.x, resolution.y);
+    putc('\n');
+
+    puts("Framebuffer Info:\n------------------------------");
+    printf("Screen Resolution: %dx%d", fb->width, fb->height);
+    printf("BPP: %d", fb->bpp);
+    printf("EDID_Size: %d", fb->edid_size);
+    putc('\n');
 }
 
 void _start(void)
