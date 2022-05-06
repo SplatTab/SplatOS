@@ -2,9 +2,9 @@ CC := clang -target x86_64-pc-none-elf
 LD := ld.lld
 ASM := nasm
 
-CCFLAGS ?= -Ilibstl -Isys -Idrivers -Iapps
+CCFLAGS ?= -Ilibstl -Isys -Idrivers -Idrivers/input -Iapps
 
-override CFILES = *.c libstl/*.c sys/*.c drivers/*.c apps/*.c
+override CFILES = *.c libstl/*.c sys/*.c drivers/*.c drivers/input/*.c apps/*.c
 override ASMFILES = sys/*.asm
 
 override INTERNALCCFLAGS = -std=gnu17 -ffreestanding -fno-stack-protector -fno-omit-frame-pointer -fno-pic -mabi=sysv -mno-80387 -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-red-zone -mcmodel=kernel -I. -I../limine $(CFILES) -c

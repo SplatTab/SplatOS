@@ -1,7 +1,7 @@
 #include "ticto.h"
 #include "libstl/stdio.h"
 #include "libstl/strings.h"
-#include "drivers/keyboard.h"
+#include "drivers/input/keyboard.h"
 
 bool printResult(int result);
 char printBoard();
@@ -46,9 +46,9 @@ bool ticto_update() {
     }
 
     for(;;){
-        printf("\n\nTHE COMPUTER MOVES TO... \n");
         move = computerMove(move);
         board[move] = computer;
+        printf("\n\nTHE COMPUTER MOVES TO %d... \n", move);
         result = printBoard();
         if (printResult(result)) break;
         move = readYourMove();
@@ -151,10 +151,12 @@ int computerMove(int lastMove) {
             break;
         }
     }
+
     if (lastMove == 0 || board[5] == ' '){
         return 5;
     }
-    if (lastMove == 5) {
+
+    if (lastMove == 5 && board[1] == ' ') {
         return 1;
     }
     if (board[5] == human) {
@@ -255,5 +257,6 @@ int computerMove(int lastMove) {
             }
         }
     }
+
     return 0;
 }

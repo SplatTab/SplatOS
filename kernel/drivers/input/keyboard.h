@@ -12,10 +12,10 @@
 #define CTRL_UP 0x9D
 #define ALT_DOWN 0x38
 #define ALT_UP 0xB8
-#define UP 0x48
-#define DOWN 0x50
-#define LEFT 0x4B
-#define RIGHT 0x4D
+#define ARROW_UP 0x48
+#define ARROW_DOWN 0x50
+#define ARROW_LEFT 0x4B
+#define ARROW_RIGHT 0x4D
 
 struct kbd_mod_t
 {
@@ -29,5 +29,5 @@ struct kbd_mod_t
 
 extern struct kbd_mod_t kbd_mod;
 
-void ps2_init();
+void kbd_init();
 char getchar();

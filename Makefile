@@ -11,6 +11,7 @@ iso:
 	xorriso $(XORRISOFLAGS)
 	rm -rf iso_root
 	./limine/limine-deploy.exe
+	qemu-system-x86_64.exe -boot d -cdrom ./SplatOS.iso -m 512
 
 .PHONY: clean
 clean:

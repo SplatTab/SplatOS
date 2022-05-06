@@ -1,6 +1,7 @@
+#include <limits.h>
 #include "strings.h"
 #include "memory.h"
-#include "limits.h"
+#include "math.h"
 
 size_t strnlen(const char *s, size_t maxlen)
 {
@@ -18,33 +19,61 @@ char *stradd(char *s1, const char *s2, size_t n)
     return memcpy(s1, s2, size);
 }
 
-int atoi(const char *str)
+// Function to swap two numbers
+void swap(char *x, char *y) {
+    char t = *x; *x = *y; *y = t;
+}
+
+// Function to reverse `buffer[i…j]`
+char* reverse(char *buffer, int i, int j)
 {
-    int sign = 1, base = 0, i = 0;
-
-    while (str[i] == ' ')
-    {
-        i++;
+    while (i < j) {
+        swap(&buffer[i++], &buffer[j--]);
     }
 
-    if (str[i] == '-' || str[i] == '+')
-    {
-        sign = 1 - 2 * (str[i++] == '-');
+    return buffer;
+}
+
+// Iterative function to implement `itoa()` function in C
+char* itoa(int value, char* buffer, int base)
+{
+    // invalid input
+    if (base < 2 || base > 32) {
+        return buffer;
     }
 
-    while (str[i] >= '0' && str[i] <= '9')
+    // consider the absolute value of the number
+    int n = abs(value);
+
+    int i = 0;
+    while (n)
     {
-        if (base > INT_MAX / 10
-            || (base == INT_MAX / 10
-            && str[i] - '0' > 7))
-        {
-            if (sign == 1)
-                return INT_MAX;
-            else
-                return INT_MIN;
+        int r = n % base;
+
+        if (r >= 10) {
+            buffer[i++] = 65 + (r - 10);
         }
-        base = 10 * base + (str[i++] - '0');
+        else {
+            buffer[i++] = 48 + r;
+        }
+
+        n = n / base;
     }
 
-    return base * sign;
+    // if the number is 0
+    if (i == 0) {
+        buffer[i++] = '0';
+    }
+
+    // If the base is 10 and the value is negative, the resulting string
+    // is preceded with a minus sign (-)
+    // With any other base, value is always considered unsigned
+    if (value < 0 && base == 10) {
+        buffer[i++] = '-';
+    }
+
+    buffer[i] = '\0'; // null terminate string
+
+    // reverse the string and return it
+    return reverse(buffer, 0, i - 1);
 }

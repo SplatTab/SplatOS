@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <limine.h>
 #include "stdio.h"
-#include "drivers/keyboard.h"
+#include "drivers/input/keyboard.h"
 #include "strings.h"
 
 static volatile struct limine_terminal_request terminal_request = {
@@ -120,9 +120,4 @@ void input(char str[], int nchars)
       }
     }
     str[i] = '\0';
-}
-
-struct limine_terminal_response getconsole()
-{
-    return *terminal_request.response;
 }

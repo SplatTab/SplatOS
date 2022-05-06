@@ -196,14 +196,14 @@ char getchar()
     return c[0];
 }
 
-bool wait_in()
+bool kbd_wait_in()
 {
     uint64_t timeout = 100000U;
     while (--timeout) if (!(inb(0x64) & (1 << 1))) return false;
     return true;
 }
 
-bool wait_out()
+bool kbd_wait_out()
 {
     uint64_t timeout = 100000;
     while (--timeout) if (inb(0x64) & (1 << 0)) return false;
@@ -212,9 +212,9 @@ bool wait_out()
 
 uint8_t kbd_write(uint8_t write)
 {
-    wait_in();
+    kbd_wait_in();
     outb(0x60, write);
-    wait_out();
+    kbd_wait_out();
     return inb(0x60);
 }
 
@@ -273,14 +273,14 @@ void kbd_handler(struct registers_t *regs)
                 kbd_mod.scrolllock = (!kbd_mod.scrolllock) ? true : false;
                 update_leds();
                 break;
-            case UP:
+            case ARROW_UP:
                 break;
-            case DOWN:
+            case ARROW_DOWN:
                 break;
-            case RIGHT:
+            case ARROW_RIGHT:
                 print("\033[C");
                 break;
-            case LEFT:
+            case ARROW_LEFT:
                 print("\033[D");
                 break;
             default:
@@ -292,7 +292,7 @@ void kbd_handler(struct registers_t *regs)
     }
 }
 
-void ps2_init()
+void kbd_init()
 {
     register_interrupt_handler(33, kbd_handler);
 }
