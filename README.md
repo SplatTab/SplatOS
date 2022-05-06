@@ -30,8 +30,6 @@ $ make
 - [x] Tic Tac Toe (;
 - [x] Graphics (putpixel, getpixel, drawbitmap, clearbitmap, getresolution)
 
-point getresolution();
-
 ## Features:
 Splat OS Has many revolutionary features, including:
 

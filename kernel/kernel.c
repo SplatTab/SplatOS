@@ -20,7 +20,7 @@ void printbootinfo()
     point resolution = getresolution();
 
     puts("\nCopyright (C) 2022 (SplatTab)");
-    puts("Welcome to SplatOS v0.05 Kernel\n\n");
+    puts("Welcome to SplatOS v0.07 Kernel\n\n");
 
     printf("Boot time In Unix: %d", boot_time.response->boot_time);
     printf("RSDP Signature: %s", rsdp_sig);
